@@ -5,15 +5,23 @@ const openBadge = require('openbadge');
 const axios = require('axios');
 
 app.get('/', async (req, res) => {
-    const url = req.query['url'];
-    const response = await axios.get(url);
-    const json = response.data;
-    const name = json.name;
-    const currnetUserCount = json.roomCount;
-    openBadge({text: [`${name}`, `${currnetUserCount}`]}, function (err, badgeSvg) {
-        res.set('Content-Type', 'image/svg+xml');
-        res.send(badgeSvg);
-    });
+    try{
+        const url = req.query['url'];
+        const response = await axios.get(url);
+        const json = response.data;
+        const name = json.name;
+        const currnetUserCount = json.roomCount;
+        openBadge({text: [`${name}`, `${currnetUserCount}`]}, function (err, badgeSvg) {
+            res.set('Content-Type', 'image/svg+xml');
+            res.send(badgeSvg);
+        });   
+    }
+    catch(e){
+        openBadge({text: [`unhandled`, `error`]}, function (err, badgeSvg) {
+            res.set('Content-Type', 'image/svg+xml');
+            res.send(badgeSvg);
+        });   
+    }
 });
 
 app.listen(port, () => {
