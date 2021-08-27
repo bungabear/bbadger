@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const openBadge = require('openbadge');
 const axios = require('axios');
+const xml2js = require('xml2js');
 
 function makeBadge(first, second, firstColor, secondColor){
     return new Promise(function(resolve, reject){
