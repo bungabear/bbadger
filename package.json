@@ -7,11 +7,16 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bungabear/bbadger.git"
+  },
+  "author": "bungabear",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
     "express": "^4.17.1",
-    "openbadge": "^1.0.4"
+    "openbadge": "^1.0.4",
+    "xml2js": "^0.4.23"
   }
 }
