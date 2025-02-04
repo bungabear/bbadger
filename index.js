@@ -14,7 +14,7 @@ function makeBadge(first, second, firstColor, secondColor){
         if(secondColor){
             color.right = secondColor;
         }
-        openBadge({text: [`${first}`, `${second}`], color: color}, function (err, badgeSvg) {
+        openBadge({text: [`${first}`, `${second}`], color: color, font: {fontFace: '../../fonts/Open_Sans/OpenSans-Bold.ttf'}}, function (err, badgeSvg) {
             if(err){
                 reject(err);
             }
