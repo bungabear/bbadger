@@ -1,26 +1,26 @@
+const fs = require('fs');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const openBadge = require('openbadge');
 const axios = require('axios');
 const xml2js = require('xml2js');
+const bsonUtil = require('./util/bson-util.js');
+const OpenSansBoldJson = require('./OpenSans-Bold.json');
 
-const handler = require('serve-handler');
-const http = require('http');
-
-const server = http.createServer((request, response) => {
-  // You pass two more arguments for config and middleware
-  // More details here: https://github.com/vercel/serve-handler#options
-  return handler(request, response);
-});
-
-server.listen(port, () => {
-  console.log(`Running at http://localhost:${port}`);
-});
-
-return;
+function extractFont() {
+	const targetPath = '/tmp/bbadger/fonts';
+	try {
+		const stat = fs.statSync(`${targetPath}/OpenSans-Bold.ttf`);
+	}
+	catch(e) {
+		fs.mkdirSync(targetPath,{recursive: true});
+		bsonUtil.loadFileFromJson('./OpenSans-Bold.json', `${targetPath}/OpenSans-Bold.ttf`);
+	}
+}
 
 function makeBadge(first, second, firstColor, secondColor){
+	extractFont();
     return new Promise(function(resolve, reject){
         const color = {};
         if(firstColor){
@@ -29,7 +29,7 @@ function makeBadge(first, second, firstColor, secondColor){
         if(secondColor){
             color.right = secondColor;
         }
-        openBadge({text: [`${first}`, `${second}`], color: color, font: {fontFace: '../../fonts/Open_Sans/OpenSans-Bold.ttf'}}, function (err, badgeSvg) {
+        openBadge({text: [`${first}`, `${second}`], color: color, font: {fontFace: '/tmp/bbadger/fonts/OpenSans-Bold.ttf'}}, function (err, badgeSvg) {
             if(err){
                 reject(err);
             }
@@ -100,5 +100,6 @@ app.get('/gather.town', async (req, res) => {
 });
 
 app.listen(port, () => {
+  extractFont();
   console.log(`Server listening on port ${port}`);
 });
